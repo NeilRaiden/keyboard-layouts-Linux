@@ -1,0 +1,14 @@
+! option = symbols
+  writer:qwerty     = +writer(qwerty)
+  aserth:aserth     = +aserth(aserth)
+  esl:qwerty        = +esl(qwerty)
+  shavian:qwerty    = +shavian(qwerty)
+  shawimp:imperial  = +shawimp(imperial)
+  usphonem:phonemic = +usphonem(phonemic)
+  ukphonem:phonemic = +ukphonem(phonemic)
+  ukrhotic:rhotic   = +ukrhotic(rhotic)
+
+// syntax:
+// evdev.xml_name:option_name = +symbols_file_name(xkb_symbols)
+
+! include %S/evdev

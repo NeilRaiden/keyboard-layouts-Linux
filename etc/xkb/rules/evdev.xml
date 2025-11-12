@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+<xkbConfigRegistry version="1.1">
+  <layoutList>
+<!-- Writer (QWERTY) Layout -->
+    <layout>
+      <configItem>
+        <name>writer</name>
+        <shortDescription>Writer</shortDescription>
+        <description>Writer (QWERTY)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- Writer (ASERTH) Layout -->
+    <layout>
+      <configItem>
+        <name>aserth</name>
+        <shortDescription>ASERTH</shortDescription>
+        <description>Writer (ASERTH)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- ESL (QWERTY) Layout -->
+    <layout>
+      <configItem>
+        <name>esl</name>
+        <shortDescription>ESL</shortDescription>
+        <description>ESL (QWERTY)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- Shavian QWERTY Layout -->
+    <layout>
+      <configItem>
+        <name>shavian</name>
+        <shortDescription>Shavian</shortDescription>
+        <description>Shavian (QWERTY)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- Shaw Imperial Layout -->
+    <layout>
+      <configItem>
+        <name>shawimp</name>
+        <shortDescription>ShawImp</shortDescription>
+        <description>Shavian (Imperial)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- US phonemic Layout -->
+    <layout>
+      <configItem>
+        <name>usphonem</name>
+        <shortDescription>US Phonemic</shortDescription>
+        <description>English (US, Phonemic)</description>
+        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- UK phonemic Layout -->
+    <layout>
+      <configItem>
+        <name>ukphonem</name>
+        <shortDescription>UK Phonemic</shortDescription>
+        <description>English (UK, Phonemic)</description>
+        <countryList><iso3166Id>GB</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+<!-- UK phonemic Layout -->
+    <layout>
+      <configItem>
+        <name>ukrhotic</name>
+        <shortDescription>UK rhotic</shortDescription>
+        <description>English (UK, Rhotic)</description>
+        <countryList><iso3166Id>GB</iso3166Id></countryList>
+        <languageList><iso639Id>eng</iso639Id></languageList>
+      </configItem>
+    </layout>
+  </layoutList>
+</xkbConfigRegistry>
