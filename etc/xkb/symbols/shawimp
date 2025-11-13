@@ -1,5 +1,6 @@
 // Shavian Imperial keyboard layouts (merged with English QWERTY)
 // Copyright (c) 2024 Neil Raiden (AGPL v.3)
+// <https://www.gnu.org/licenses/agpl-3.0.en.html>
 
 // Shaw Imperial is named after the Shavian Imperial Good Companion Model 6 typewriter,
 // produced in 1962 by **Imperial** in Leicester, England.
@@ -20,12 +21,13 @@
 //  sudo mkdir -p /etc/xkb/symbols
 //  sudo cp shawimp /etc/xkb/symbols/
 //```
-// 2. Add following section to `/etc/xkb/rules/evdev.xml`:
+// 2. Add the following section to `/etc/xkb/rules/evdev.xml`:
 //```
 //<?xml version="1.0" encoding="UTF-8"?>
 //<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
 //<xkbConfigRegistry version="1.1">
 //  <layoutList>
+//<!-- Shaw Imperial Layout -->
 //    <layout>
 //      <configItem>
 //        <name>shawimp</name>
@@ -45,10 +47,10 @@
 //! include %S/evdev
 //```
 // 4. Testing:
-//	- activate ShavianImperidal: `setxkbmap -layout shawimp`,
+//	- activate ShavianImperial: `setxkbmap -layout shawimp`,
 //  - test it by simply typing with the new layout,
-//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in /etc/xkb/symbols. In such case create a link: `sudo ln -s /etc/xkb/symbols/shawimp /usr/share/X11/xkb/symbols/shawimp`,
-//	- reset back to default layout: `setxkbmap us`
+//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link: `sudo ln -s /etc/xkb/symbols/shawimp /usr/share/X11/xkb/symbols/shawimp`,
+//	- reset back to the default layout: `setxkbmap us`
 
 // ## Unshifted:
 // ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┐
