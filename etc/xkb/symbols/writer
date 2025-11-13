@@ -38,7 +38,7 @@
 // 4. Testing:
 //	- activate "Writer (QWERTY)": `setxkbmap -layout writer`,
 //  - test it by simply typing with the new layout,
-//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link: `sudo ln -s /etc/xkb/symbols/shawimp /usr/share/X11/xkb/symbols/shawimp`,
+//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link: `sudo ln -s /etc/xkb/symbols/writer /usr/share/X11/xkb/symbols/writer`,
 //	- reset back to default layout: `setxkbmap us`
 
 //
