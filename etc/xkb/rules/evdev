@@ -4,9 +4,7 @@
   esl:qwerty        = +esl(qwerty)
   shavian:qwerty    = +shavian(qwerty)
   shawimp:imperial  = +shawimp(imperial)
-  usphonem:phonemic = +usphonem(phonemic)
-  ukphonem:phonemic = +ukphonem(phonemic)
-  ukrhotic:rhotic   = +ukrhotic(rhotic)
+  phonem:phonemic   = +phonem(phonemic)
 
 // syntax:
 // evdev.xml_name:option_name = +symbols_file_name(xkb_symbols)

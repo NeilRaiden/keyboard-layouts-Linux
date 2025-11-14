@@ -38,7 +38,10 @@
         <name>shavian</name>
         <shortDescription>Shavian</shortDescription>
         <description>Shavian (QWERTY)</description>
-        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <countryList>
+          <iso3166Id>US</iso3166Id>
+          <iso3166Id>GB</iso3166Id>
+        </countryList>
         <languageList><iso639Id>eng</iso639Id></languageList>
       </configItem>
     </layout>
@@ -48,37 +51,23 @@
         <name>shawimp</name>
         <shortDescription>ShawImp</shortDescription>
         <description>Shavian (Imperial)</description>
-        <countryList><iso3166Id>US</iso3166Id></countryList>
+        <countryList>
+          <iso3166Id>US</iso3166Id>
+          <iso3166Id>GB</iso3166Id>
+        </countryList>
         <languageList><iso639Id>eng</iso639Id></languageList>
       </configItem>
     </layout>
-<!-- US phonemic Layout -->
+<!-- English Phonemic Layout -->
     <layout>
       <configItem>
-        <name>usphonem</name>
-        <shortDescription>US Phonemic</shortDescription>
-        <description>English (US, Phonemic)</description>
-        <countryList><iso3166Id>US</iso3166Id></countryList>
-        <languageList><iso639Id>eng</iso639Id></languageList>
-      </configItem>
-    </layout>
-<!-- UK phonemic Layout -->
-    <layout>
-      <configItem>
-        <name>ukphonem</name>
-        <shortDescription>UK Phonemic</shortDescription>
-        <description>English (UK, Phonemic)</description>
-        <countryList><iso3166Id>GB</iso3166Id></countryList>
-        <languageList><iso639Id>eng</iso639Id></languageList>
-      </configItem>
-    </layout>
-<!-- UK phonemic Layout -->
-    <layout>
-      <configItem>
-        <name>ukrhotic</name>
-        <shortDescription>UK rhotic</shortDescription>
-        <description>English (UK, Rhotic)</description>
-        <countryList><iso3166Id>GB</iso3166Id></countryList>
+        <name>phonem</name>
+        <shortDescription>Phonemic</shortDescription>
+        <description>English (Phonemic)</description>
+        <countryList>
+          <iso3166Id>US</iso3166Id>
+          <iso3166Id>GB</iso3166Id>
+        </countryList>
         <languageList><iso639Id>eng</iso639Id></languageList>
       </configItem>
     </layout>
