@@ -2,48 +2,56 @@
 // Copyright (c) 2024 Neil Raiden (AGPL v.3)
 // <https://www.gnu.org/licenses/agpl-3.0.en.html>
 
-// Problem 1a: unlike Mac or Windows, Linux does not allow to send more than a single Unicode symbol per keystroke.
-// Problem 1b: IPA phonetic transcription for English language is not phonemic. Out of about 50 English phonemes about 15-20 of them require using multiple IPA symbols.
+// Problem 1a: unlike Mac or Windows, XKB on Linux does not allow to map more than a single Unicode symbol to a key (one symbol per keystroke policy).
+// Problem 1b: IPA phonetic transcription for English language is _phonetic_ (not _phonemic_). Out of about 50 English phonemes about 15-20 of them require using multiple IPA symbols.
 
-// Solution: the only solution is to make the keyboard layout to send some unused (or rarely used) symbols, and then convert them to multi-symbol strings with XCompose.
+// Solution: the only solution is to create a keyboard layout that sends some unused (or rarely used) Unicode symbols, and then convert these symbols to multi-symbol strings using XCompose. 
 
-// Problem 2: XCompose does not convert multi-byte Unicode symbols.
+// Problem 2: XCompose does not convert multi-byte Unicode symbols. There is an unused Unicode range: U+FDD0-U+FDEF. But these are multi-byte codepoins which XCompose ignores.
 
-// Solution: instead of multi-symbol phonemes the rarely used single-byte symbols from U+C0—U+DF range:
+// Solution: instead of multi-symbol phonemes the rarely used single-byte symbols from U+C0—U+DF range. Just keep in mind that when using some other keyboard layout capable of producing the symbols from the Latin-1 range C0-DF. To disable XCompose rename the `~/.XCompose` file and run command `ibus restart`.
 
-// ┌─────┬─────────┬────────┬─────────────────────────────────────────┐
-// │ key │ phoneme │ letter │ Unicode name                            │
-// ├─────┴─────────┴────────┴─────────────────────────────────────────┤
-// │  c  │   "tʃ"  │    À   │ Latin Capital Letter A with grave       │
-// │  J  │   "dʒ"  │    Á   │ Latin Capital letter A with acute       │
-// │  y  │   "ɑː"  │    Â   │ Latin Capital letter A with circumflex  │
-// │  Y  │   "ɔː"  │    Ã   │ Latin Capital letter A with tilde       │
-// │  I  │   "iː"  │    Ä   │ Latin Capital letter A with diaeresis   │
-// │  M  │   "uː"  │    Å   │ Latin Capital letter A with ring above  │
-// │  V  │   "juː" │    È   │ Latin Capital letter E with grave       │
-// │  E  │   "eɪ"  │    É   │ Latin Capital letter E with acute       │
-// │  F  │   "aɪ"  │    Ê   │ Latin Capital letter E with circumflex  │
-// │  q  │   "ɔɪ"  │    Ë   │ Latin Capital letter E with diaeresis   │
-// │  Q  │   "aʊ"  │    Ì   │ Latin Capital letter I with grave       │
-// │  O  │"ɔʊ"/"əʊ"│    Í   │ Latin Capital letter I with acute       │
-// │  W  │   "ɪə"  │    Î   │ Latin Capital letter I with circumflex  │
-// │  D  │   "ər"  │    Ï   │ Latin Capital letter I with diaeresis   │
-// │  x  │   "ɜːr" │    Ò   │ Latin Capital letter O with grave       │
-// │  R  │   "ɑːr" │    Ó   │ Latin Capital letter O with acute       │
-// │  P  │   "ɔːr" │    Ô   │ Latin Capital letter O with circumflex  │
-// │  X  │   "eər" │    Õ   │ Latin Capital letter O with tilde       │
-// │  C  │   "ɪər" │    Ö   │ Latin Capital letter O with diaeresis   │
-// └──────────────────────────────────────────────────────────────────┘
-
+// ┌─────┬────────────────────────────────────────────────────────────┬──────────────────┐
+// │ kbd │         Unicode symbols produced by this kbd layout        │ XCompose phoneme │
+// │     ├────────────────────────────────────────────────────────────┼──────────────────┤
+// │ key │ Unicode │ letter │ Unicode name                            │ UKʳ │ UKr │  US  │
+// ├─────┼────────────────────────────────────────────────────────────┼──────────────────┤
+// │  c  │  U+C0   │    À   │ Latin Capital Letter A with grave       │ tʃ  │ tʃ  │  tʃ  │
+// │  J  │  U+C1   │    Á   │ Latin Capital letter A with acute       │ dʒ  │ dʒ  │  dʒ  │
+// │  y  │  U+C2   │    Â   │ Latin Capital letter A with circumflex  │ ɑː  │ ɑː  │  ɑ   │
+// │  Y  │  U+C3   │    Ã   │ Latin Capital letter A with tilde       │ ɔː  │ ɔː  │  ɔ   │
+// │  I  │  U+C4   │    Ä   │ Latin Capital letter A with diaeresis   │ iː  │ iː  │  i   │
+// │  M  │  U+C5   │    Å   │ Latin Capital letter A with ring above  │ uː  │ uː  │  u   │
+// │  V  │  U+C8   │    È   │ Latin Capital letter E with grave       │ juː │ juː │  ju  │
+// │  E  │  U+C9   │    É   │ Latin Capital letter E with acute       │ eɪ  │ eɪ  │  eɪ  │
+// │  F  │  U+CA   │    Ê   │ Latin Capital letter E with circumflex  │ aɪ  │ aɪ  │  aɪ  │
+// │  q  │  U+CB   │    Ë   │ Latin Capital letter E with diaeresis   │ ɔɪ  │ ɔɪ  │  ɔɪ  │
+// │  Q  │  U+CC   │    Ì   │ Latin Capital letter I with grave       │ aʊ  │ aʊ  │  aʊ  │
+// │  O  │  U+CD   │    Í   │ Latin Capital letter I with acute       │ əʊ  │ əʊ  │  ɔʊ  │
+// │  W  │  U+CE   │    Î   │ Latin Capital letter I with circumflex  │ ɪə  │ ɪə  │  ɪə  │
+// │  D  │  U+CF   │    Ï   │ Latin Capital letter I with diaeresis   │ əʳ  │ ər  │  ər  │
+// │  x  │  U+D2   │    Ò   │ Latin Capital letter O with grave       │ ɜːʳ │ ɜːr │  ɜr  │
+// │  R  │  U+D3   │    Ó   │ Latin Capital letter O with acute       │ ɑːʳ │ ɑːr │  ɑr  │
+// │  P  │  U+D4   │    Ô   │ Latin Capital letter O with circumflex  │ ɔːʳ │ ɔːr │  ɔr  │
+// │  X  │  U+D5   │    Õ   │ Latin Capital letter O with tilde       │ eəʳ │ eər │  er  │
+// │  C  │  U+D6   │    Ö   │ Latin Capital letter O with diaeresis   │ ɪəʳ │ ɪər │  ɪər │
+// └─────┴────────────────────────────────────────────────────────────┴──────────────────┘
 
 // ## Installation:
-// 1. Copy this file (phonem) to `/etc/xkb/symbols/phonem`
+// 0. Download files `phonem` and `XCompose-__` file of your choice (US, UK or UK-rhotic).
+// 1. create directory sturcture:
 //```
 //  sudo mkdir -p /etc/xkb/rules
 //  sudo mkdir -p /etc/xkb/symbols
-//  sudo cp phonem /etc/xkb/symbols/
+//  sudo mkdir -p /etc/xkb/XCompose
 //```
-// 2. Add the following section to `/etc/xkb/rules/evdev.xml`:
+// 2. Copy this file (phonem) to `/etc/xkb/symbols/phonem`, and the XCompose file of your choice. Example:
+//```
+//  sudo cp phonem /etc/xkb/symbols/
+//  sudo cp XCompose-US /etc/xkb/XCompose/
+//```
+// 3. Create `/etc/xkb/rules/evdev.xml` file and add the following section:
+//    (you can download the `evdev.xml` file from this project and only delete unwanted layouts)
 //```
 //<?xml version="1.0" encoding="UTF-8"?>
 //<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
@@ -66,26 +74,41 @@
 //  </layoutList>
 //</xkbConfigRegistry>
 //```
-// 3. (optional) add the following line to `/etc/xkb/rules/evdev`. Note that GNOME layout switcher ignores the `evdev` file and uses only the `evdev.xml`:
+// 4. (optional) add the following line to `/etc/xkb/rules/evdev`.
+//    Note that GNOME layout switcher ignores the `evdev` file and uses only the `evdev.xml`:
 //```
 //! option = symbols
 //  phonem:phonemic = +phonem(phonemic)
 //! include %S/evdev
 //```
-// --------------------
-// 4. Save the table below to `$HOME/.XCompose` file.
-// Unfortunately XKB does not allow to map more than a single Unicode symbol per keystroke.
-// A workaround is to map symbols from an "unused" Unicode block, then convert them to multi-character strings with XCompose.
-// Unused Unicode range used: U+FDD0-U+FDEF.
-// These code points will be translated by ~/.XCompose according to following table:
+// 5. Verify if the keyboard switcher in your distro recognizes the new setup.
 //```
+//  xkbcli list >xkbcli-list.out
 //```
-// --------------------
-// 5. Testing:
-//	- activate "Writer (QWERTY)": `setxkbmap -layout phonem`,
-//  - test it by simply typing with the new layout,
-//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link: `sudo ln -s /etc/xkb/symbols/phonem /usr/share/X11/xkb/symbols/phonem`,
+//  The `xkbcli list` produces about 5,000 lines output, divided into 3 sections:
+//  - models:
+//  - layouts:
+//  - layout_options:
+//  The custom layouts should be listed at the end of the "layouts:" section.
+// 6. Testing layout itself:
+//	- before testing run `setxkbmap us` so you can return to default layout by selecting this command from history with ESC and arrow keys.
+//	- activate "English (Phonemic)" either from keyboard switcher or from command line: `setxkbmap -layout phonem`,
+//  - test it by simply typing with the new layout, note that some keys will produce letters "ÀÁÂÃÄÅÈÉÊËÌÍÎÏÒÓÔÕÖ" — these will be converted by XCcompose.
 //	- reset back to default layout: `setxkbmap us`
+//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link:
+//```
+// sudo ln -s /etc/xkb/symbols/phonem /usr/share/X11/xkb/symbols/phonem
+//```
+// 7. Create soft link `$HOME/.XCompose` to the XCompose file of your choice and restart `ibus`. Example:
+//```
+// ln -s /etc/xkb/XCompose/XCompose-US $HOME/.XCompose
+// ibus restart
+//```
+// 8. Test XCompose:
+//  - switch to "English (Phonemic) again (using keyboard switcher, Wing+Space, or command `setxkbmap -layout phonem`)
+//	- try typing in a text editor of your choice, especially the keys: "c J y Y I M V E F q Q O W D x R P X C" — this will test the XCompose.
+//  - keep in mind that command line editors like VIM will not be able to recognize editing commands (i/I for insert, etc.) — for VIM you may need a VIM keyboard layout built with inoremap feature (soon to be published on NeilRaiden.com).
+// --------------------
 
 // ------ Layer 1 (unshifted) ------
 // note: letter "g" in IPA is U+0261 not U+67.
