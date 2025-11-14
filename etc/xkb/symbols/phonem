@@ -1,0 +1,225 @@
+// # English (Phonemic) keyboard layout
+// Copyright (c) 2024 Neil Raiden (AGPL v.3)
+// <https://www.gnu.org/licenses/agpl-3.0.en.html>
+
+// Problem 1a: unlike Mac or Windows, Linux does not allow to send more than a single Unicode symbol per keystroke.
+// Problem 1b: IPA phonetic transcription for English language is not phonemic. Out of about 50 English phonemes about 15-20 of them require using multiple IPA symbols.
+
+// Solution: the only solution is to make the keyboard layout to send some unused (or rarely used) symbols, and then convert them to multi-symbol strings with XCompose.
+
+// Problem 2: XCompose does not convert multi-byte Unicode symbols.
+
+// Solution: instead of multi-symbol phonemes the rarely used single-byte symbols from U+C0—U+DF range:
+
+// ┌─────┬─────────┬────────┬─────────────────────────────────────────┐
+// │ key │ phoneme │ letter │ Unicode name                            │
+// ├─────┴─────────┴────────┴─────────────────────────────────────────┤
+// │  c  │   "tʃ"  │    À   │ Latin Capital Letter A with grave       │
+// │  J  │   "dʒ"  │    Á   │ Latin Capital letter A with acute       │
+// │  y  │   "ɑː"  │    Â   │ Latin Capital letter A with circumflex  │
+// │  Y  │   "ɔː"  │    Ã   │ Latin Capital letter A with tilde       │
+// │  I  │   "iː"  │    Ä   │ Latin Capital letter A with diaeresis   │
+// │  M  │   "uː"  │    Å   │ Latin Capital letter A with ring above  │
+// │  V  │   "juː" │    È   │ Latin Capital letter E with grave       │
+// │  E  │   "eɪ"  │    É   │ Latin Capital letter E with acute       │
+// │  F  │   "aɪ"  │    Ê   │ Latin Capital letter E with circumflex  │
+// │  q  │   "ɔɪ"  │    Ë   │ Latin Capital letter E with diaeresis   │
+// │  Q  │   "aʊ"  │    Ì   │ Latin Capital letter I with grave       │
+// │  O  │"ɔʊ"/"əʊ"│    Í   │ Latin Capital letter I with acute       │
+// │  W  │   "ɪə"  │    Î   │ Latin Capital letter I with circumflex  │
+// │  D  │   "ər"  │    Ï   │ Latin Capital letter I with diaeresis   │
+// │  x  │   "ɜːr" │    Ò   │ Latin Capital letter O with grave       │
+// │  R  │   "ɑːr" │    Ó   │ Latin Capital letter O with acute       │
+// │  P  │   "ɔːr" │    Ô   │ Latin Capital letter O with circumflex  │
+// │  X  │   "eər" │    Õ   │ Latin Capital letter O with tilde       │
+// │  C  │   "ɪər" │    Ö   │ Latin Capital letter O with diaeresis   │
+// └──────────────────────────────────────────────────────────────────┘
+
+
+// ## Installation:
+// 1. Copy this file (phonem) to `/etc/xkb/symbols/phonem`
+//```
+//  sudo mkdir -p /etc/xkb/rules
+//  sudo mkdir -p /etc/xkb/symbols
+//  sudo cp phonem /etc/xkb/symbols/
+//```
+// 2. Add the following section to `/etc/xkb/rules/evdev.xml`:
+//```
+//<?xml version="1.0" encoding="UTF-8"?>
+//<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+//<xkbConfigRegistry version="1.1">
+//  <layoutList>
+//<!-- English Phonemic Layout (start) -->
+//    <layout>
+//      <configItem>
+//        <name>phonem</name>
+//        <shortDescription>Phonemic</shortDescription>
+//        <description>English (Phonemic)</description>
+//        <countryList>
+//          <iso3166Id>US</iso3166Id>
+//          <iso3166Id>GB</iso3166Id>
+//        </countryList>
+//        <languageList><iso639Id>eng</iso639Id></languageList>
+//      </configItem>
+//    </layout>
+//<!-- English Phonemic Layout (end) -->
+//  </layoutList>
+//</xkbConfigRegistry>
+//```
+// 3. (optional) add the following line to `/etc/xkb/rules/evdev`. Note that GNOME layout switcher ignores the `evdev` file and uses only the `evdev.xml`:
+//```
+//! option = symbols
+//  phonem:phonemic = +phonem(phonemic)
+//! include %S/evdev
+//```
+// --------------------
+// 4. Save the table below to `$HOME/.XCompose` file.
+// Unfortunately XKB does not allow to map more than a single Unicode symbol per keystroke.
+// A workaround is to map symbols from an "unused" Unicode block, then convert them to multi-character strings with XCompose.
+// Unused Unicode range used: U+FDD0-U+FDEF.
+// These code points will be translated by ~/.XCompose according to following table:
+//```
+//```
+// --------------------
+// 5. Testing:
+//	- activate "Writer (QWERTY)": `setxkbmap -layout phonem`,
+//  - test it by simply typing with the new layout,
+//  - if setxkbmap returns "Error loading new keyboard description", then it's possible that your Linux distro runs xkb with elevated privileges and ignores files in `/etc/xkb/symbols`. In such case create a link: `sudo ln -s /etc/xkb/symbols/phonem /usr/share/X11/xkb/symbols/phonem`,
+//	- reset back to default layout: `setxkbmap us`
+
+// ------ Layer 1 (unshifted) ------
+// note: letter "g" in IPA is U+0261 not U+67.
+// ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┐
+// │ ` │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │ bksp │
+// ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬────┤
+// │ tab │ Ë │ w │ ɛ │ r │ t │ Â │ ʌ │ ɪ │ ɒ │ p │ [ │ ] │ \  │
+// ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┤
+// │ caps  │ ə │ s │ d │ f │ ɡ │ h │ j │ k │ l │ ; │ ' │  ent │
+// ├───────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴──────┤
+// │ shift   │ z │ Ò │ À │ v │ b │ n │ m │ , │ . │ / │  shift │
+// └─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴────────┘
+
+// ------ Layer 2 (shifted) ------
+// ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┐
+// │ ~ │ ! │ @ │ £ │ $ │ % │ ^ │ & │ * │ ( │ ) │ _ │ + │ bksp │
+// ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬────┤
+// │ tab │ Ì │ Î │ É │ Ó │ θ │ Ã │ ʊ │ Ä │ Í │ Ô │ { │ } │ |  │
+// ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┤
+// │ caps  │ æ │ ʃ │ Ï │ Ê │ · │ ð │ Á │ « │ » │ : │ " │  ent │
+// ├───────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴──────┤
+// │ shift   │ ʒ │ Õ │ Ö │ È │ ⸰ │ ŋ │ Å │ ‹ │ › │ ? │  shift │
+// └─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴────────┘
+
+// ------ Layer 3 (Alt+key) ------
+// ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┐
+// │ ´ │ ¹ │ ² │ ³ │ ⁴ │ ⁵ │ ⁶ │ ⁷ │ ⁸ │ ⁹ │ ⁰ │ → │ ≠ │ bksp │
+// ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬────┤
+// │ tab │ … │ ʍ │ e │ ʳ │ ɾ │   │ ↑ │   │ ˈ │ ˌ │ ⟨ │ ⟩ │ •  │
+// ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┤
+// │ caps  │ “ │ ” │ ↓ │ ° │ ʔ │ ‐ │ ʤ │ ≤ │ ≥ │ ː │ × │  ent │
+// ├───────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴──────┤
+// │ shift   │ ‘ │ ’ │ ʧ │ ⁃ │ ○ │ – │ — │ < │ > │ ÷ │  shift │
+// └─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴────────┘
+
+// ------ Layer 4 (Alt+Shift+key) ------
+// ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬──────┐
+// │ ≈ │ ₁ │ ₂ │ ₃ │ ₄ │ ₅ │ ₆ │ ₇ │ ₈ │ ₉ │ ₀ │ ← │ ± │ bksp │
+// ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬────┤
+// │ tab │ ⋯ │   │ ɜ │ ɹ │ ʰ │   │   │   │   │   │ ⟮ │ ⟯ │ ◦  │
+// ├─────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┤
+// │ caps  │ ɐ │ ☺ │ ɚ │   │ ˀ │ ‑ │   │   │ ɫ │ § │   │  ent │
+// ├───────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴──────┤
+// │ shift   │ £ │ ɝ │   │   │ ◌ │   │   │ ☒ │ ☐ │ ☑ │  shift │
+// └─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴────────┘
+
+// (for better viewing in VIM run ":set ts=16")
+
+default partial alphanumeric_keys modifier_keys
+xkb_symbols "phonemic" {
+
+    name[Group1]= "English (Phonemic)";
+
+//│ ´ │ ¹ │ ² │ ³ │ ⁴ │ ⁵ │ ⁶ │ ⁷ │ ⁸ │ ⁹ │ ⁰ │ → │ ≠ │ bksp │
+//│ ≈ │ ₁ │ ₂ │ ₃ │ ₄ │ ₅ │ ₆ │ ₇ │ ₈ │ ₉ │ ₀ │ ← │ ± │ bksp │
+    key <TLDE>	{[ grave,	asciitilde,	U00B4,	U2248 ]}; // ` ~ ´ (acute accent)  ≈ (almost equal)
+    key <AE01>	{[ 1,	exclam,	U00B9,	U2081 ]}; // 1 ! ¹ (superscript 1) ₁ (subscript 1)
+    key <AE02>	{[ 2,	at,	U00B2,	U2082 ]}; // 2 @ ² (superscript 2) ₂ (subscript 2)
+    key <AE03>	{[ 3,	numbersign,	U00b3,	U2083 ]}; // 3 # ³ (superscript 3) ₃ (subscript 3)
+    key <AE04>	{[ 4,	dollar,	U2074,	U2084 ]}; // 4 $ ⁴ (superscript 4) ₄ (subscript 4)
+    key <AE05>	{[ 5,	percent,	U2075,	U2085 ]}; // 5 % ⁵ (superscript 5) ₅ (subscript 5)
+    key <AE06>	{[ 6,	asciicircum,	U2076,	U2086 ]}; // 6 ^ ⁶ (superscript 6) ₆ (subscript 6)
+    key <AE07>	{[ 7,	ampersand,	U2077,	U2087 ]}; // 7 & ⁷ (superscript 7) ₇ (subscript 7)
+    key <AE08>	{[ 8,	asterisk,	U2078,	U2088 ]}; // 8 * ⁸ (superscript 8) ₈ (subscript 8)
+    key <AE09>	{[ 9,	parenleft,	U2079,	U2089 ]}; // 9 ( ⁹ (superscript 9) ₉ (subscript 9)
+    key <AE10>	{[ 0,	parenright,	U2070,	U2080 ]}; // 0 ( ⁰ (superscript 0) ₀ (subscript 0)
+    key <AE11>	{[ minus,	underscore,	U2192,	U2190 ]}; // - _ → (right arrow)   ← (left arrow)
+    key <AE12>	{[ equal,	plus,	U2260,	U00B1 ]}; // = + ≠ (notequal to)   ± (plus minus)
+
+
+// │ tab │ Ë │ w │ ɛ │ r │ t │ Â │ ʌ │ ɪ │ ɒ │ p │ [ │ ] │ \  │
+// │ tab │ Ì │ Î │ É │ Ó │ θ │ Ã │ ʊ │ Ä │ Í │ Ô │ { │ } │ |  │
+// │ tab │ … │ ʍ │ e │ ʳ │ ɾ │   │ ↑ │   │ ˈ │ ˌ │ ⟨ │ ⟩ │ •  │
+// │ tab │ ⋯ │   │ ɜ │ ɹ │ ʰ │   │   │   │   │   │ ⟮ │ ⟯ │ ◦  │
+    key <AD01> {[ U00CB,	U00CC,	U2026,	U22EF	]}; //q: ɔɪ aʊ  … (ellipsis) ⋯ (horiz ellips)
+    key <AD02> {[ w,	U00CE,	U028D,	VoidSymbol	]}; //w: w  ɪə  ʍ
+    key <AD03> {[ U025B,	U00C9,	U0065,	U025C	]}; //e: ɛ  eɪ  e  ɜ
+    key <AD04> {[ r,	U00D3,	U02B3,	U0279	]}; //r: r  ɑr  ʳ  ɹ
+    key <AD05> {[ t,	U03B8,	U027E,	U02B0	]}; //t: t  θ   ɾ  ʰ
+    key <AD06> {[ U00C2,	U00C3,	VoidSymbol,	VoidSymbol	]}; //y: ɑ  ɔ
+    key <AD07> {[ U028C,	U028A,	U2191,	VoidSymbol	]}; //u: ʌ  ʊ   ↑
+    key <AD08> {[ U026A,	U00C4,	VoidSymbol,	VoidSymbol	]}; //i: ɪ  i
+    key <AD09> {[ U0252,	U00CD,	U02C8,	VoidSymbol	]}; //o: ɒ  ɔʊ  ˈ (high stress)
+    key <AD10> {[ p,	U00D4,	U02CC,	VoidSymbol	]}; //p: p  ɔr  ˌ (low stress)
+    key <AD11> {[ bracketleft,	braceleft,	U27E8,	U27EE	]}; //   [  {   ⟨ (angle br) ⟮ (math flat paren)
+    key <AD12> {[ bracketright,	braceright,	U27E9,	U27EF	]}; //   ]  }   ⟩ (angle br) ⟯ (math flat paren)
+    key <BKSL> {[ backslash,	bar,	U2022,	U25E6	]}; //   \  |   • (bullet)   ◦ (white bullet)
+
+// │ caps  │ ə │ s │ d │ f │ ɡ │ h │ j │ k │ l │ ; │ ' │  ent │
+// │ caps  │ æ │ ʃ │ Ï │ Ê │ · │ ð │ Á │ « │ » │ : │ " │  ent │
+// │ caps  │ “ │ ” │ ↓ │ ° │ ʔ │ ‐ │ ʤ │ ≤ │ ≥ │ ː │ × │  ent │
+// │ caps  │ ɐ │ ☺ │ ɚ │   │ ˀ │ ‑ │   │   │ ɫ │ § │   │  ent │
+    key <AC01>	{[ U0259,	U00E6,	U201C,	U0250	]}; //a: ə  æ(ash) “ (L d quot)  ɐ
+    key <AC02>	{[ s,	U0283,	U201D,	U263A	]}; //s: s  ʃ   ” (R d quot)  ☺ (smiley)
+    key <AC03>	{[ d,	U00CF,	U2193,	U025A	]}; //d: d  ər  ↓ (down arr)  ɚ
+    key <AC04>	{[ f,	U00CA,	U00B0,	VoidSymbol	]}; //f: f  aɪ  ° (degree)
+    key <AC05>	{[ U0261,	periodcentered,	U0294,	U02C0	]}; //g: g  ·   ʔ  ˀ
+    key <AC06>	{[ h,	U00F0,	U2010,	U2011	]}; //h: h  ð   ‐ (hyphen) ‑ (no-br hyphen)
+    key <AC07>	{[ j,	U00C1,	U02A4,	VoidSymbol	]}; //j: j  dʒ  ʤ (dezsh)
+    key <AC08>	{[ k,	guillemotleft,	U2264,	VoidSymbol	]}; //k: k  «   ≤ (less or)
+    key <AC09>	{[ l,	guillemotright,	U2265,	U026B	]}; //l: l  »   ≥ (great or)  ɫ (dark L)
+    key <AC10>	{[ semicolon,	colon,	U02D0,	section	]}; //   ;  :   ː (tri colon) § (section)
+    key <AC11>	{[ apostrophe,	quotedbl,	U00D7,	VoidSymbol	]}; //   '  "   × (multipl)
+
+// │ shift   │ z │ Ò │ À │ v │ b │ n │ m │ , │ . │ / │  shift │
+// │ shift   │ ʒ │ Õ │ Ö │ È │ ⸰ │ ŋ │ Å │ ‹ │ › │ ? │  shift │
+// │ shift   │ ‘ │ ’ │ ʧ │ ⁃ │ ○ │ – │ — │ < │ > │ ÷ │  shift │ altgr
+// │ shift   │ £ │ ɝ │   │   │ ◌ │   │   │ ☒ │ ☐ │ ☑ │  shift │
+    key <AB01>	{[ z,	U0292,	U2018,	U00A3	]}; //z: z  ʒ (ezh)  ‘ (L sing quo)
+    key <AB02>	{[ U00D2,	U00D5,	U2019,	U025D	]}; //x: ɜr er       ’ (R sing quo)  ɝ
+    key <AB03>	{[ U00C0,	U00D6,	U027A,	VoidSymbol	]}; //c: tʃ ɪər      ʧ (tesh)
+    key <AB04>	{[ v,	U00C8,	U2043,	VoidSymbol	]}; //v: v  ju       ⁃ (hyphen bul)
+    key <AB05>	{[ b,	U2E30,	U25CB,	U25CC	]}; //b: b  ⸰(midcir) ○(wh circle) ◌
+    key <AB06>	{[ n,	U014B,	U2013,	VoidSymbol	]}; //n: n  ŋ(engma)  –(N-dash)
+    key <AB07>	{[ m,	U00C5,	U2014,	VoidSymbol	]}; //m: m  u         —(M-dash)
+    key <AB08>	{[ comma,	U2039,	less,	U2612	]}; //   ,  ‹(s guil) < (less)      ☒ (box with x)
+    key <AB09>	{[ period,	U203A,	greater,	U2610	]}; //   .  › (s guil) > (greater)  ☐ (ballot)
+    key <AB10>	{[ slash,	question,	U00F7,	U2611	]}; //   /  ?          ÷ (division) ☑ (w/ check)
+
+    key <SPCE>	{[ space,	space,	emspace,	U200B ]}; // U2003 M-space, U200B zero-width space
+
+    replace key <CAPS> {
+        type = "ALPHABETIC",
+        symbols = [ Escape, Escape ],
+        actions [Group1] = [ SetMods(modifiers=none), SetMods(modifiers=Lock,clearLocks) ]
+    };
+
+    replace key <ESC> { [ Alt_L, Alt_L ] };
+
+    include "shift(both_capslock_cancel)"
+
+    include "level3(alt_switch)"
+
+    include "compose(paus)"
+
+};
+
